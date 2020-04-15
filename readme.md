@@ -1,4 +1,4 @@
-## lite_cc_json
+## lite_cxx_json
 
 A lite json parser and generator for homework of cc course II  
 ONLY SUPPORT ASCII CHARACTER  
