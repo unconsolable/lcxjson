@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/chen/projects/lcxjson/lcxjson.h
+string
+-
+codecvt
+-
+memory
+-
+
+/home/chen/projects/lcxjson/test.cc
+lcxjson.h
+/home/chen/projects/lcxjson/lcxjson.h
+iostream
+-
+fstream
+-
+iomanip
+-
+
