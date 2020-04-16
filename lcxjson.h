@@ -57,9 +57,15 @@ public:
 	int parse(const char* val);
 	size_t getArraySize() const;
 	elementValue getArrayElement(size_t index) const;
+	elementValue& getArrayElementRef(size_t index);
+	void addArrayElement(elementValue& elem);
 	std::string getObjectKey(size_t index) const;
 	elementValue getObjectValue(size_t index) const;
+	elementValue& getObjectValueRef(size_t index);
+	elementValue findObjectByKey(const std::string& key) const;
+	elementValue& findObjectByKeyRef(const std::string& key);
 	size_t getObjectSize() const;
+	void addObject(std::string key, elementValue& elem);
 	void toString(std::string& ret) const;
 	~elementValue();
 private:
@@ -71,6 +77,8 @@ private:
 	int parse_literal(context* c, const char* expect, elementType type);
 	int parse_number(context* c);
 	int parse_object(context* c);
+	void array_check_alloc();
+	void member_check_alloc();
 	double num = 0;
 	std::string str;
 	std::allocator<elementValue> arrayAlloc;

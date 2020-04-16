@@ -142,6 +142,19 @@ elementValue elementValue::getArrayElement(size_t index) const
 	return arrBegin[index];
 }
 
+elementValue& elementValue::getArrayElementRef(size_t index)
+{
+	return arrBegin[index];
+}
+
+void elementValue::addArrayElement(elementValue& elem)
+{
+	arrayAlloc.construct(arrEnd);
+	*arrEnd = elem;
+	++arrEnd;
+	array_check_alloc();
+}
+
 std::string elementValue::getObjectKey(size_t index) const
 {
 	return memBegin[index].key;
@@ -152,9 +165,47 @@ elementValue elementValue::getObjectValue(size_t index) const
 	return memBegin[index].value;
 }
 
+elementValue& elementValue::getObjectValueRef(size_t index)
+{
+	return memBegin[index].value;
+}
+
+elementValue elementValue::findObjectByKey(const std::string& key) const
+{
+	for (auto it = memBegin; it != memEnd; ++it)
+	{
+		if ((it->key) == key)
+		{
+			return it->value;
+		}
+	}
+	return elementValue();
+}
+
+elementValue& elementValue::findObjectByKeyRef(const std::string& key)
+{
+	for (auto it = memBegin; it != memEnd; ++it)
+	{
+		if ((it->key) == key)
+		{
+			return it->value;
+		}
+	}
+	return *this;
+}
+
 size_t elementValue::getObjectSize() const
 {
 	return memEnd - memBegin;
+}
+
+void elementValue::addObject(std::string key, elementValue& elem)
+{
+	memberAlloc.construct(memEnd);
+	memEnd->key = key;
+	memEnd->value = elem;
+	++memEnd;
+	member_check_alloc();
 }
 
 void elementValue::toString(std::string& ret) const
@@ -304,7 +355,8 @@ int elementValue::parse_array(context* c)
 		arrayAlloc.construct(arrEnd);
 		arrEnd->parse_value(c);
 		++arrEnd;
-		if (arrEnd == arrSize)
+		array_check_alloc();
+		/*if (arrEnd == arrSize)
 		{
 			elementValue* newBegin = arrayAlloc.allocate((arrSize - arrBegin) * 2);
 			elementValue* newSize = newBegin + (arrSize - arrBegin) * 2;
@@ -317,7 +369,7 @@ int elementValue::parse_array(context* c)
 			arrBegin = newBegin;
 			arrEnd = newEnd;
 			arrSize = newSize;
-		}
+		}*/
 		parse_whitespace(c);
 		if (*c->json == ',')
 			++c->json;
@@ -494,7 +546,8 @@ int elementValue::parse_object(context* c)
 		parse_whitespace(c);
 		memEnd->value.parse_value(c);
 		++memEnd;
-		if (memEnd == memSize)
+		member_check_alloc();
+		/*if (memEnd == memSize)
 		{
 			elementMember* newBegin = memberAlloc.allocate((memSize - memBegin) * 2);
 			elementMember* newSize = newBegin + (memSize - memBegin) * 2;
@@ -505,7 +558,7 @@ int elementValue::parse_object(context* c)
 			memBegin = newBegin;
 			memEnd = newEnd;
 			memSize = newSize;
-		}
+		}*/
 		parse_whitespace(c);
 		if (*c->json == ',')
 			++c->json;
@@ -519,6 +572,40 @@ int elementValue::parse_object(context* c)
 			return PARSE_MISS_COMMA_OR_CURLY_BRACKET;
 	}
 	return PARSE_OK;
+}
+
+void elementValue::array_check_alloc()
+{
+	if (arrEnd == arrSize)
+	{
+		elementValue* newBegin = arrayAlloc.allocate((arrSize - arrBegin) * 2);
+		elementValue* newSize = newBegin + (arrSize - arrBegin) * 2;
+		elementValue* newEnd = std::uninitialized_copy(arrBegin, arrEnd, newBegin);
+		for (auto it = arrEnd; it != arrBegin;)
+		{
+			arrayAlloc.destroy(--it);
+		}
+		arrayAlloc.deallocate(arrBegin, arrEnd - arrBegin);
+		arrBegin = newBegin;
+		arrEnd = newEnd;
+		arrSize = newSize;
+	}
+}
+
+void elementValue::member_check_alloc()
+{
+	if (memEnd == memSize)
+	{
+		elementMember* newBegin = memberAlloc.allocate((memSize - memBegin) * 2);
+		elementMember* newSize = newBegin + (memSize - memBegin) * 2;
+		elementMember* newEnd = std::uninitialized_copy(memBegin, memEnd, newBegin);
+		for (auto it = memEnd; it != memBegin;)
+			memberAlloc.destroy(--it);
+		memberAlloc.deallocate(memBegin, memEnd - memBegin);
+		memBegin = newBegin;
+		memEnd = newEnd;
+		memSize = newSize;
+	}
 }
 
 #define PRINT_WS(step)                            \

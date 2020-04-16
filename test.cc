@@ -16,6 +16,10 @@ int main()
 	std::string str; 
 	rootElem.toString(str);
 	elementValue switchElem;
+	elementValue add;
+	add.setBool(true);
 	switchElem.parse(str.c_str());
-	print_json(0, switchElem, true);
+	switchElem.addObject("aa", add);
+	auto find2 = switchElem.findObjectByKey("profiles");
+	print_json(0, find2, true);
 }
