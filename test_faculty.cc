@@ -4,43 +4,42 @@
 #include <map>
 #include <fstream>
 
-#define SAVE_CHANGES() \
-do\
-{\
-newRootElem.parse("{}");\
-elementValue newFacultyValue;\
-newFacultyValue.parse("{}");\
-elementValue newStuAccValue;\
-newStuAccValue.parse("{}");\
-elementValue newStuValue;\
-newStuValue.parse("{}");\
-for (const auto& curFac : storeFaculty)\
-{\
-elementValue newPw; \
-newPw.setString(curFac.getPw()); \
-newFacultyValue.addObject(curFac.getId(), newPw); \
-}\
-for (const auto& curStu : storeStudent)\
-{\
-elementValue newPw, newCurStuValue; \
-newPw.setString(curStu.getPw()); \
-newStuAccValue.addObject(curStu.getId(), newPw); \
-newCurStuValue = curStu.toJsonObject(); \
-newStuValue.addObject(curStu.getId(), newCurStuValue); \
-}\
-elementValue newAccountValue; \
-newAccountValue.parse("{}"); \
-newAccountValue.addObject("faculty", newFacultyValue); \
-newAccountValue.addObject("student", newStuAccValue); \
-newRootElem.addObject("account", newAccountValue); \
-newRootElem.addObject("studata", newStuValue); \
-std::string ans; \
-newRootElem.toString(ans); \
-std::ofstream out(filenm, std::ios::out | std::ios::trunc); \
-out << ans; \
-return 0; \
-}\
-while (0)
+#define SAVE_CHANGES()                                              \
+	do                                                              \
+	{                                                               \
+		newRootElem.parse("{}");                                    \
+		elementValue newFacultyValue;                               \
+		newFacultyValue.parse("{}");                                \
+		elementValue newStuAccValue;                                \
+		newStuAccValue.parse("{}");                                 \
+		elementValue newStuValue;                                   \
+		newStuValue.parse("{}");                                    \
+		for (const auto &curFac : storeFaculty)                     \
+		{                                                           \
+			elementValue newPw;                                     \
+			newPw.setString(curFac.getPw());                        \
+			newFacultyValue.addObject(curFac.getId(), newPw);       \
+		}                                                           \
+		for (const auto &curStu : storeStudent)                     \
+		{                                                           \
+			elementValue newPw, newCurStuValue;                     \
+			newPw.setString(curStu.getPw());                        \
+			newStuAccValue.addObject(curStu.getId(), newPw);        \
+			newCurStuValue = curStu.toJsonObject();                 \
+			newStuValue.addObject(curStu.getId(), newCurStuValue);  \
+		}                                                           \
+		elementValue newAccountValue;                               \
+		newAccountValue.parse("{}");                                \
+		newAccountValue.addObject("faculty", newFacultyValue);      \
+		newAccountValue.addObject("student", newStuAccValue);       \
+		newRootElem.addObject("account", newAccountValue);          \
+		newRootElem.addObject("studata", newStuValue);              \
+		std::string ans;                                            \
+		newRootElem.toString(ans);                                  \
+		std::ofstream out(filenm, std::ios::out | std::ios::trunc); \
+		out << ans;                                                 \
+		return 0;                                                   \
+	} while (0)
 
 int main()
 {
@@ -48,7 +47,8 @@ int main()
 	std::cout << "File Location?";
 	std::cin >> filenm;
 	std::ifstream source(filenm);
-	std::string ans; std::string tmp;
+	std::string ans;
+	std::string tmp;
 	while (source >> tmp)
 	{
 		ans += tmp + ' ';
@@ -88,12 +88,13 @@ int main()
 			}
 			storeStudent.push_back(newstu);
 		}
-
 	}
 	//login process
 	std::string id, curpw;
-	std::cout << "ID and Password\n";
-	std::cin >> id >> curpw;
+	std::cout << "ID:";
+	std::cin >> id;
+	std::cout << "Password:";
+	std::cin >> curpw;
 	if (id == "1000" && curpw == "sa")
 	{
 		//sa mode
@@ -106,7 +107,7 @@ int main()
 			std::cin >> commandStr >> IdStr;
 			if (commandStr == "add")
 			{
-				std::cout << "Faculty Press F, Student Press S\n";
+				std::cout << "Faculty Press F, Student Press S:\n";
 				char addTypeRes;
 				std::cin >> addTypeRes;
 				if (addTypeRes == 'F')
@@ -135,7 +136,7 @@ int main()
 			}
 			else if (commandStr == "delete")
 			{
-				std::cout << "Faculty Press F, Student Press S\n";
+				std::cout << "Faculty Press F, Student Press S:\n";
 				char delTypeRes;
 				std::cin >> delTypeRes;
 				if (delTypeRes == 'F')
@@ -145,7 +146,7 @@ int main()
 					{
 						index = facid2index.at(IdStr);
 					}
-					catch (const std::out_of_range& err)
+					catch (const std::out_of_range &err)
 					{
 						std::cout << err.what();
 						continue;
@@ -159,7 +160,7 @@ int main()
 					{
 						index = stuid2index.at(IdStr);
 					}
-					catch (const std::out_of_range& err)
+					catch (const std::out_of_range &err)
 					{
 						std::cout << err.what();
 						continue;
@@ -173,7 +174,7 @@ int main()
 			}
 			else if (commandStr == "change")
 			{
-				std::cout << "Faculty Press F, Student Press S\n";
+				std::cout << "Faculty Press F, Student Press S:\n";
 				char chgTypeRes;
 				std::cin >> chgTypeRes;
 				if (chgTypeRes == 'F')
@@ -184,12 +185,12 @@ int main()
 					{
 						index = facid2index.at(IdStr);
 					}
-					catch (const std::out_of_range& err)
+					catch (const std::out_of_range &err)
 					{
 						std::cout << err.what();
 						continue;
 					}
-					std::cout << "New Password\n";
+					std::cout << "New Password:\n";
 					std::cin >> newPw;
 					storeFaculty[index].changePw(newPw);
 				}
@@ -201,12 +202,12 @@ int main()
 					{
 						index = stuid2index.at(IdStr);
 					}
-					catch (const std::out_of_range& err)
+					catch (const std::out_of_range &err)
 					{
 						std::cout << err.what();
 						continue;
 					}
-					std::cout << "New Password\n";
+					std::cout << "New Password:\n";
 					std::cin >> newPw;
 					storeStudent[index].changePw(newPw);
 				}
@@ -246,7 +247,7 @@ int main()
 					{
 						index = stuid2index.at(stuIdStr);
 					}
-					catch (const std::out_of_range& err)
+					catch (const std::out_of_range &err)
 					{
 						std::cout << err.what();
 						continue;
@@ -254,20 +255,24 @@ int main()
 				}
 				if (commandStr == "add")
 				{
-					std::string addCourseName; double addCourseMark;
-					std::cout << "CourseName?"; std::cin >> addCourseName;
-					std::cout << "CourseMark?"; std::cin >> addCourseMark;
+					std::string addCourseName;
+					double addCourseMark;
+					std::cout << "CourseName?";
+					std::cin >> addCourseName;
+					std::cout << "CourseMark?";
+					std::cin >> addCourseMark;
 					storeStudent[index].addScore(addCourseName, addCourseMark);
 				}
 				else if (commandStr == "delete")
 				{
 					std::string delCourseName;
-					std::cout << "CourseName?"; std::cin >> delCourseName;
+					std::cout << "CourseName?";
+					std::cin >> delCourseName;
 					try
 					{
 						storeStudent[index].deleteScore(delCourseName);
 					}
-					catch (const std::exception& e)
+					catch (const std::exception &e)
 					{
 						std::cout << e.what();
 					}
@@ -282,7 +287,7 @@ int main()
 				}
 				else
 				{
-					std::cout << "Invaild command\n";
+					std::cout << "Invaild command.\n";
 				}
 			}
 		}
@@ -298,7 +303,7 @@ int main()
 			}
 			else
 			{
-				std::cout << "Invalid password";
+				std::cout << "Invalid password.";
 				return 0;
 			}
 		}
