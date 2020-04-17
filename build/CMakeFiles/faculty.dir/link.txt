@@ -1,0 +1,2 @@
+/usr/bin/ar qc libfaculty.a  CMakeFiles/faculty.dir/faculty.cc.o
+/usr/bin/ranlib libfaculty.a

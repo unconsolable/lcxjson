@@ -62,8 +62,8 @@ public:
 	std::string getObjectKey(size_t index) const;
 	elementValue getObjectValue(size_t index) const;
 	elementValue& getObjectValueRef(size_t index);
-	elementValue findObjectByKey(const std::string& key) const;
-	elementValue& findObjectByKeyRef(const std::string& key);
+	elementValue findObjectByKey(const std::string& key,bool& succ) const;
+	elementValue& findObjectByKeyRef(const std::string& key,bool& succ);
 	size_t getObjectSize() const;
 	void addObject(std::string key, elementValue& elem);
 	void toString(std::string& ret) const;

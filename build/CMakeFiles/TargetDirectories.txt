@@ -1,4 +1,5 @@
 /home/chen/projects/lcxjson/build/CMakeFiles/rebuild_cache.dir
 /home/chen/projects/lcxjson/build/CMakeFiles/edit_cache.dir
 /home/chen/projects/lcxjson/build/CMakeFiles/lcxjson.dir
-/home/chen/projects/lcxjson/build/CMakeFiles/lcxjson_test.dir
+/home/chen/projects/lcxjson/build/CMakeFiles/test_faculty.dir
+/home/chen/projects/lcxjson/build/CMakeFiles/faculty.dir

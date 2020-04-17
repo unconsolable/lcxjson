@@ -124,17 +124,57 @@ lcxjson/fast:
 .PHONY : lcxjson/fast
 
 #=============================================================================
-# Target rules for targets named lcxjson_test
+# Target rules for targets named test_faculty
 
 # Build rule for target.
-lcxjson_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 lcxjson_test
-.PHONY : lcxjson_test
+test_faculty: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_faculty
+.PHONY : test_faculty
 
 # fast build rule for target.
-lcxjson_test/fast:
-	$(MAKE) -f CMakeFiles/lcxjson_test.dir/build.make CMakeFiles/lcxjson_test.dir/build
-.PHONY : lcxjson_test/fast
+test_faculty/fast:
+	$(MAKE) -f CMakeFiles/test_faculty.dir/build.make CMakeFiles/test_faculty.dir/build
+.PHONY : test_faculty/fast
+
+#=============================================================================
+# Target rules for targets named faculty
+
+# Build rule for target.
+faculty: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 faculty
+.PHONY : faculty
+
+# fast build rule for target.
+faculty/fast:
+	$(MAKE) -f CMakeFiles/faculty.dir/build.make CMakeFiles/faculty.dir/build
+.PHONY : faculty/fast
+
+faculty.o: faculty.cc.o
+
+.PHONY : faculty.o
+
+# target to build an object file
+faculty.cc.o:
+	$(MAKE) -f CMakeFiles/faculty.dir/build.make CMakeFiles/faculty.dir/faculty.cc.o
+.PHONY : faculty.cc.o
+
+faculty.i: faculty.cc.i
+
+.PHONY : faculty.i
+
+# target to preprocess a source file
+faculty.cc.i:
+	$(MAKE) -f CMakeFiles/faculty.dir/build.make CMakeFiles/faculty.dir/faculty.cc.i
+.PHONY : faculty.cc.i
+
+faculty.s: faculty.cc.s
+
+.PHONY : faculty.s
+
+# target to generate assembly for a file
+faculty.cc.s:
+	$(MAKE) -f CMakeFiles/faculty.dir/build.make CMakeFiles/faculty.dir/faculty.cc.s
+.PHONY : faculty.cc.s
 
 lcxjson.o: lcxjson.cc.o
 
@@ -163,32 +203,32 @@ lcxjson.cc.s:
 	$(MAKE) -f CMakeFiles/lcxjson.dir/build.make CMakeFiles/lcxjson.dir/lcxjson.cc.s
 .PHONY : lcxjson.cc.s
 
-test.o: test.cc.o
+test_faculty.o: test_faculty.cc.o
 
-.PHONY : test.o
+.PHONY : test_faculty.o
 
 # target to build an object file
-test.cc.o:
-	$(MAKE) -f CMakeFiles/lcxjson_test.dir/build.make CMakeFiles/lcxjson_test.dir/test.cc.o
-.PHONY : test.cc.o
+test_faculty.cc.o:
+	$(MAKE) -f CMakeFiles/test_faculty.dir/build.make CMakeFiles/test_faculty.dir/test_faculty.cc.o
+.PHONY : test_faculty.cc.o
 
-test.i: test.cc.i
+test_faculty.i: test_faculty.cc.i
 
-.PHONY : test.i
+.PHONY : test_faculty.i
 
 # target to preprocess a source file
-test.cc.i:
-	$(MAKE) -f CMakeFiles/lcxjson_test.dir/build.make CMakeFiles/lcxjson_test.dir/test.cc.i
-.PHONY : test.cc.i
+test_faculty.cc.i:
+	$(MAKE) -f CMakeFiles/test_faculty.dir/build.make CMakeFiles/test_faculty.dir/test_faculty.cc.i
+.PHONY : test_faculty.cc.i
 
-test.s: test.cc.s
+test_faculty.s: test_faculty.cc.s
 
-.PHONY : test.s
+.PHONY : test_faculty.s
 
 # target to generate assembly for a file
-test.cc.s:
-	$(MAKE) -f CMakeFiles/lcxjson_test.dir/build.make CMakeFiles/lcxjson_test.dir/test.cc.s
-.PHONY : test.cc.s
+test_faculty.cc.s:
+	$(MAKE) -f CMakeFiles/test_faculty.dir/build.make CMakeFiles/test_faculty.dir/test_faculty.cc.s
+.PHONY : test_faculty.cc.s
 
 # Help Target
 help:
@@ -199,13 +239,17 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... lcxjson"
-	@echo "... lcxjson_test"
+	@echo "... test_faculty"
+	@echo "... faculty"
+	@echo "... faculty.o"
+	@echo "... faculty.i"
+	@echo "... faculty.s"
 	@echo "... lcxjson.o"
 	@echo "... lcxjson.i"
 	@echo "... lcxjson.s"
-	@echo "... test.o"
-	@echo "... test.i"
-	@echo "... test.s"
+	@echo "... test_faculty.o"
+	@echo "... test_faculty.i"
+	@echo "... test_faculty.s"
 .PHONY : help
 
 

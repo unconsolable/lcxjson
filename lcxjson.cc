@@ -149,6 +149,7 @@ elementValue& elementValue::getArrayElementRef(size_t index)
 
 void elementValue::addArrayElement(elementValue& elem)
 {
+	array_check_alloc();
 	arrayAlloc.construct(arrEnd);
 	*arrEnd = elem;
 	++arrEnd;
@@ -170,27 +171,31 @@ elementValue& elementValue::getObjectValueRef(size_t index)
 	return memBegin[index].value;
 }
 
-elementValue elementValue::findObjectByKey(const std::string& key) const
+elementValue elementValue::findObjectByKey(const std::string& key,bool& succ) const
 {
 	for (auto it = memBegin; it != memEnd; ++it)
 	{
 		if ((it->key) == key)
 		{
+			succ = true;
 			return it->value;
 		}
 	}
-	return elementValue();
+	succ = false;
+	return *this;
 }
 
-elementValue& elementValue::findObjectByKeyRef(const std::string& key)
+elementValue& elementValue::findObjectByKeyRef(const std::string& key,bool& succ)
 {
 	for (auto it = memBegin; it != memEnd; ++it)
 	{
 		if ((it->key) == key)
 		{
+			succ = true;
 			return it->value;
 		}
 	}
+	succ = false;
 	return *this;
 }
 
@@ -201,6 +206,7 @@ size_t elementValue::getObjectSize() const
 
 void elementValue::addObject(std::string key, elementValue& elem)
 {
+	member_check_alloc();
 	memberAlloc.construct(memEnd);
 	memEnd->key = key;
 	memEnd->value = elem;
@@ -347,8 +353,7 @@ int elementValue::parse_array(context* c)
 		type = JSON_ARRAY;
 		return PARSE_OK;
 	}
-	arrEnd = arrBegin = arrayAlloc.allocate(10);
-	arrSize = arrBegin + 10;
+	array_check_alloc();
 	while (1)
 	{
 		parse_whitespace(c);
@@ -529,8 +534,7 @@ int elementValue::parse_object(context* c)
 		return PARSE_OK;
 	}
 	const char* p = c->json;
-	memEnd = memBegin = memberAlloc.allocate(10);
-	memSize = memBegin + 10;
+	member_check_alloc();
 	while (1)
 	{
 		parse_whitespace(c);
@@ -576,7 +580,12 @@ int elementValue::parse_object(context* c)
 
 void elementValue::array_check_alloc()
 {
-	if (arrEnd == arrSize)
+	if (arrBegin == nullptr)
+	{
+		arrEnd = arrBegin = arrayAlloc.allocate(10);
+		arrSize = arrBegin + 10;
+	}
+	else if (arrEnd == arrSize)
 	{
 		elementValue* newBegin = arrayAlloc.allocate((arrSize - arrBegin) * 2);
 		elementValue* newSize = newBegin + (arrSize - arrBegin) * 2;
@@ -594,7 +603,12 @@ void elementValue::array_check_alloc()
 
 void elementValue::member_check_alloc()
 {
-	if (memEnd == memSize)
+	if (memBegin == nullptr)
+	{
+		memEnd = memBegin = memberAlloc.allocate(10);
+		memSize = memBegin + 10;
+	}
+	else if (memEnd == memSize)
 	{
 		elementMember* newBegin = memberAlloc.allocate((memSize - memBegin) * 2);
 		elementMember* newSize = newBegin + (memSize - memBegin) * 2;
