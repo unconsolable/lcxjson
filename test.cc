@@ -16,16 +16,9 @@ int main()
 	std::string str; 
 	rootElem.toString(str);
 	elementValue switchElem;
-	elementValue add;
-	elementValue arrayItem;
-	add.setBool(true);
 	//以下添加数组
-	arrayItem.parse("[]");
-	arrayItem.addArrayElement(add);
-	arrayItem.addArrayElement(add);
-	switchElem.addObject("aa", add);
 	switchElem.parse(str.c_str());
-	switchElem.addObject("bb", arrayItem);
-	auto find2 = switchElem.findObjectByKey("profiles");
-	print_json(0, switchElem, true);
+	bool succ;
+	auto find2 = switchElem.findObjectByKey("profiles",succ);
+	print_json(0, find2.findObjectByKey("list",succ).getArrayElement(2), true);
 }

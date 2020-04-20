@@ -117,6 +117,7 @@ int main()
 					std::cin >> addPw;
 					faculty toAddFaculty(IdStr, addPw, FACULTY);
 					storeFaculty.push_back(toAddFaculty);
+					facid2index[toAddFaculty.getId()]=storeFaculty.size()-1;
 				}
 				else if (addTypeRes == 'S')
 				{
@@ -128,6 +129,7 @@ int main()
 					student toAddStudent(IdStr, addPw, FACULTY);
 					toAddStudent.setName(addNm);
 					storeStudent.push_back(toAddStudent);
+					stuid2index[toAddStudent.getId()]=storeStudent.size()-1;
 				}
 				else
 				{
