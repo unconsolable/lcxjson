@@ -56,14 +56,22 @@ public:
 	void setString(const std::string& val);
 	int parse(const char* val);
 	size_t getArraySize() const;
+	// 以下get函数和operator[]不检查溢出
 	elementValue getArrayElement(size_t index) const;
 	elementValue& getArrayElementRef(size_t index);
+	const elementValue& operator[](size_t index) const;
+	elementValue& operator[](size_t index);
 	void addArrayElement(elementValue& elem);
 	std::string getObjectKey(size_t index) const;
 	elementValue getObjectValue(size_t index) const;
 	elementValue& getObjectValueRef(size_t index);
+	// 查找结果由succ表示
 	elementValue findObjectByKey(const std::string& key,bool& succ) const;
 	elementValue& findObjectByKeyRef(const std::string& key,bool& succ);
+	// 若无结果返回自身 调用时应校验
+	const elementValue& operator[](const std::string& key) const;
+	// 无结果则与addObject效果相同,但需自己赋value
+	elementValue& operator[](const std::string& key);
 	size_t getObjectSize() const;
 	void addObject(std::string key, elementValue& elem);
 	void toString(std::string& ret) const;

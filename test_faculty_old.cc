@@ -1,3 +1,4 @@
+// use old API rather than operator
 #include "lcxjson.h"
 #include "faculty.h"
 #include <iostream>
@@ -62,9 +63,9 @@ int main()
 	std::vector<student> storeStudent;
 	std::map<std::string, double> stuid2index;
 	std::map<std::string, double> facid2index;
-	elementValue facultyInfo = rootElem["account"]["faculty"];
-	elementValue stuAccInfo = rootElem["account"]["student"];
-	elementValue stuInfo = rootElem["studata"];
+	elementValue facultyInfo = rootElem.getObjectValue(0).getObjectValue(0);
+	elementValue stuAccInfo = rootElem.getObjectValue(0).getObjectValue(1);
+	elementValue stuInfo = rootElem.getObjectValue(1);
 	//convert teacher info
 	for (size_t cur = 0; cur < facultyInfo.getObjectSize(); ++cur)
 	{
@@ -75,17 +76,20 @@ int main()
 	for (size_t cur = 0; cur < stuAccInfo.getObjectSize(); ++cur)
 	{
 		std::string key = stuAccInfo.getObjectKey(cur);
-		elementValue correInfo = stuInfo[key];
-		stuid2index.insert(std::make_pair(key, cur));
-		student newstu(key, stuAccInfo.getObjectValue(cur).getString(), STUDENT);
-		newstu.setName(correInfo["name"].getString());
-		for (size_t curAddScore = 0; curAddScore < correInfo.getObjectValue(1).getArraySize(); ++curAddScore)
+		bool succ;
+		elementValue correInfo = stuInfo.findObjectByKey(key, succ);
+		if (succ)
 		{
-			newstu.addScore(correInfo["courseName"][curAddScore].getString(), correInfo["courseScore"][curAddScore].getNumber());
+			stuid2index.insert(std::make_pair(key, cur));
+			student newstu(key, stuAccInfo.getObjectValue(cur).getString(), STUDENT);
+			newstu.setName(correInfo.getObjectValue(0).getString());
+			for (size_t curAddScore = 0; curAddScore < correInfo.getObjectValue(1).getArraySize(); ++curAddScore)
+			{
+				newstu.addScore(correInfo.getObjectValue(1).getArrayElement(curAddScore).getString(), correInfo.getObjectValue(2).getArrayElement(curAddScore).getNumber());
+			}
+			storeStudent.push_back(newstu);
 		}
-		storeStudent.push_back(newstu);
 	}
-	
 	//login process
 	std::string id, curpw;
 	std::cout << "ID:";

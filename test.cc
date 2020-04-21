@@ -5,7 +5,7 @@
 int main()
 {
 	// test using the setting json of Windows Terminal
-	std::ifstream input("test");
+	std::ifstream input("test.json");
 	std::string ans; std::string tmp;
 	while (input >> tmp)
 	{
@@ -19,6 +19,6 @@ int main()
 	//以下添加数组
 	switchElem.parse(str.c_str());
 	bool succ;
-	auto find2 = switchElem.findObjectByKey("profiles",succ);
-	print_json(0, find2.findObjectByKey("list",succ).getArrayElement(2), true);
+	auto find2 = switchElem["profiles"];
+	print_json(0, find2["list"][2], true);
 }

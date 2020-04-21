@@ -147,6 +147,16 @@ elementValue& elementValue::getArrayElementRef(size_t index)
 	return arrBegin[index];
 }
 
+const elementValue& elementValue::operator[](size_t index) const
+{
+	return arrBegin[index];
+}
+
+elementValue& elementValue::operator[](size_t index)
+{
+	return arrBegin[index];
+}
+
 void elementValue::addArrayElement(elementValue& elem)
 {
 	array_check_alloc();
@@ -196,6 +206,36 @@ elementValue& elementValue::findObjectByKeyRef(const std::string& key,bool& succ
 		}
 	}
 	succ = false;
+	return *this;
+}
+
+elementValue& elementValue::operator[](const std::string& key)
+{
+	for (auto it = memBegin; it != memEnd; ++it)
+	{
+		if ((it->key) == key)
+		{
+			return it->value;
+		}
+	}
+	member_check_alloc();
+	memberAlloc.construct(memEnd);
+	memEnd->key = key;
+	++memEnd;
+	member_check_alloc();
+	return (memEnd-1)->value;
+}
+
+
+const elementValue& elementValue::operator[](const std::string& key) const
+{
+	for (auto it = memBegin; it != memEnd; ++it)
+	{
+		if ((it->key) == key)
+		{
+			return it->value;
+		}
+	}
 	return *this;
 }
 
