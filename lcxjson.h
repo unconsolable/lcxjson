@@ -43,9 +43,11 @@ class elementValue
 {
 	friend class elementMember;
 public:
+	// 资源管理函数
 	elementValue();
 	elementValue(const elementValue& rhs);
 	elementValue& operator=(const elementValue& rhs);
+	// set get部分
 	elementType getType() const;
 	bool isNull() const;
 	bool getBool() const;
@@ -54,27 +56,36 @@ public:
 	void setNumber(const double& val);
 	std::string getString() const;
 	void setString(const std::string& val);
+	// 将val解析为JSON树 this为根节点
 	int parse(const char* val);
+	// 获取数组大小
 	size_t getArraySize() const;
 	// 以下get函数和operator[]不检查溢出
 	elementValue getArrayElement(size_t index) const;
 	elementValue& getArrayElementRef(size_t index);
 	const elementValue& operator[](size_t index) const;
 	elementValue& operator[](size_t index);
+	// 尾后添加元素
 	void addArrayElement(elementValue& elem);
+	// 返回第i个元素的Key
 	std::string getObjectKey(size_t index) const;
+	// 返回第i个元素的Value
 	elementValue getObjectValue(size_t index) const;
 	elementValue& getObjectValueRef(size_t index);
 	// 查找结果由succ表示
 	elementValue findObjectByKey(const std::string& key,bool& succ) const;
 	elementValue& findObjectByKeyRef(const std::string& key,bool& succ);
-	// 若无结果返回自身 调用时应校验
+	// 效果与find函数相同 若无结果返回自身 调用时应校验
 	const elementValue& operator[](const std::string& key) const;
-	// 无结果则与addObject效果相同,但需自己赋value
+	// 效果与find函数相同 无结果则与addObject效果相同,但需自己赋value
 	elementValue& operator[](const std::string& key);
+	// 返回键值对数目
 	size_t getObjectSize() const;
+	// 尾后添加
 	void addObject(std::string key, elementValue& elem);
+	// 生成JSON文本
 	void toString(std::string& ret) const;
+	// 析构函数
 	~elementValue();
 private:
 	void parse_whitespace(context* c);
