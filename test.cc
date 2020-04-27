@@ -20,5 +20,6 @@ int main()
 	switchElem.parse(str.c_str());
 	bool succ;
 	auto find2 = switchElem["profiles"];
+	//输出结果
 	print_json(0, find2["list"][2], true);
 }
