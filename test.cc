@@ -9,6 +9,7 @@ int main()
 	std::string ans; std::string tmp;
 	while (input >> tmp)
 	{
+		// 连接字符串
 		ans += tmp + ' ';
 	}
 	elementValue rootElem;
