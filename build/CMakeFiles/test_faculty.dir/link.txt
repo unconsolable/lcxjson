@@ -1,1 +1,0 @@
-/usr/bin/c++  -g  -rdynamic CMakeFiles/test_faculty.dir/test_faculty.cc.o  -o test_faculty liblcxjson.a libfaculty.a 

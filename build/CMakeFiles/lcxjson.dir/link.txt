@@ -1,2 +1,0 @@
-/usr/bin/ar qc liblcxjson.a  CMakeFiles/lcxjson.dir/lcxjson.cc.o
-/usr/bin/ranlib liblcxjson.a

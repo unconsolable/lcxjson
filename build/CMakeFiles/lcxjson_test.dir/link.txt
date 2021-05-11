@@ -1,1 +1,0 @@
-/usr/bin/c++  -g  -rdynamic CMakeFiles/lcxjson_test.dir/test.cc.o  -o lcxjson_test liblcxjson.a 
